@@ -39,8 +39,8 @@ CSS = """<style>
 [data-testid="stMain"] [data-testid="stMarkdownContainer"]>p,
 [data-testid="stMain"] [data-testid="stMarkdownContainer"]>ul{max-width:780px;line-height:1.62}
 [data-testid="stDataFrame"]{font-variant-numeric:tabular-nums}
-.do-ribbon{background:#fff4df;color:#8a4b00;border:1px solid #f0d8ae;border-radius:6px;padding:6px 12px;
- font-size:.92rem;margin-bottom:10px}
+.do-ribbon{background:#fff4df;color:#8a4b00;border:1px solid #f0d8ae;border-radius:6px;padding:5px 12px;
+ font-size:.86rem;margin-bottom:14px}
 .do-web{background:#1b1b1a;color:#fff;border-radius:6px;padding:8px 13px;font-size:.9rem;margin-bottom:10px}
 .do-web a{color:#9ec3f0}
 .do-concl{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin:.4rem 0 1.2rem;max-width:1000px}
@@ -63,9 +63,21 @@ CSS = """<style>
 .do-saw div{border:1px solid #e3e1da;border-radius:6px;padding:10px 14px;font-size:.88rem;color:#5f5e5a}
 .do-saw b{color:#1b1b1a;display:block;margin-bottom:3px;font-size:.9rem}
 .do-hr{border:0;border-top:1px solid #e3e1da;margin:1.8rem 0 1.2rem;max-width:1000px}
-.do-why{border:1px solid #e3e1da;border-radius:6px;background:#f6f5f2;padding:13px 16px;max-width:860px;
- font-size:.9rem;color:#5f5e5a;margin:10px 0 18px;line-height:1.6}
+.do-why{max-width:820px;font-size:.86rem;color:#5f5e5a;margin:6px 0 0;line-height:1.6}
 .do-why b{color:#1b1b1a}
+/* 제목 블록 */
+.do-head{margin:2px 0 4px}
+.do-head h1{font-size:1.75rem;font-weight:700;margin:0 0 4px;letter-spacing:-.01em}
+.do-head p{color:#5f5e5a;font-size:.98rem;margin:0;max-width:820px}
+/* 질문 고르기 — 고른 쪽만 테두리로 표시(주 버튼은 아래 하나뿐) */
+.st-key-pick_budget button,.st-key-pick_dongne button{height:auto;min-height:52px;white-space:normal;
+ line-height:1.45;padding:11px 16px;font-weight:600}
+.st-key-pick_budget button:has(div p:first-child),.st-key-pick_dongne button:has(div p:first-child){}
+/* 고른 질문 전문 */
+.do-qtext{border-left:3px solid #1c5cab;background:#f6f5f2;border-radius:0 6px 6px 0;padding:11px 16px;
+ margin:12px 0 16px;max-width:900px;color:#1b1b1a;font-size:1rem;line-height:1.55}
+/* 하는 일 세 칸 */
+.do-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;max-width:1000px;margin:6px 0 2px}
 </style>"""
 
 STAGE_NOTE = {"진단": "지금 어떤 상태인가", "처방": "그래서 어떻게 나눌까",
@@ -228,12 +240,8 @@ with st.sidebar:
                    "https://github.com/yeono1220/jeju-data/archive/refs/heads/main.zip", width="stretch")
     st.caption("본체는 센터 PC에서 센터 CSV로 직접 계산합니다.")
 
-st.markdown("<div class='do-web'><b>웹 시연판입니다.</b> 무거운 데이터 적재·계산은 미리 끝내 두고, "
-            "<b>AI 답 작성만 실제로 호출</b>합니다. 숫자는 저장된 계산 결과에서 나오므로 보고서·기획서와 같습니다. "
-            "<a href='https://github.com/yeono1220/jeju-data'>내려받아 설치</a>하면 센터 CSV로 직접 분석합니다.</div>",
-            unsafe_allow_html=True)
 st.markdown("<div class='do-ribbon'><b>가상데이터</b> — 실제와 같은 형식으로 만든 가짜 자료입니다. "
-            "화면과 보고서의 모든 숫자는 시연용이며, 실제 의사결정에 쓰지 마세요.</div>", unsafe_allow_html=True)
+            "화면의 모든 숫자는 시연용이며 실제 의사결정에 쓰지 마세요.</div>", unsafe_allow_html=True)
 
 t1, t2, t3, t4 = st.tabs(["① 질문", "② 데이터", "③ 분석 결과", "④ 전송 기록"])
 
@@ -259,20 +267,20 @@ with t1:
                 st.session_state.pop(k, None)
             st.rerun()
     else:
-        st.markdown("### 무엇을 알고 싶으세요?")
-        pick = st.radio("질문", QUESTIONS, horizontal=True, label_visibility="collapsed",
-                        format_func=lambda s: load(s)["label"], index=QUESTIONS.index(slug))
-        if pick != slug:
-            st.session_state.slug = pick
-            st.rerun()
-        st.text_area("질문", value=D["question"], height=80, label_visibility="collapsed", disabled=True)
-        st.markdown(
-            "<div class='do-why'><b>왜 질문이 두 개뿐인가요?</b><br>"
-            "자료를 올리는 데 1.6GB가 드는데 무료 서버는 1GB까지만 줍니다. "
-            "사무용 PC는 보통 8~16GB라 <b>설치하면 그대로 돌아갑니다</b>. "
-            "여기서는 미리 돌려 둔 결과를 보여 주고, AI가 답 문장만 새로 씁니다. "
-            "숫자는 그때 실제로 나온 값 그대로입니다.</div>",
-            unsafe_allow_html=True)
+        st.markdown("<div class='do-head'><h1>데이터올레</h1>"
+                    "<p>탐나는전 캐시백을 감이 아니라 데이터로 설계합니다. "
+                    "질문 하나로 진단 → 배분안 비교 → 보고서·실행물까지 만듭니다.</p></div>",
+                    unsafe_allow_html=True)
+        st.markdown("#### 무엇을 알고 싶으세요?")
+        cols = st.columns(len(QUESTIONS))
+        for col, q in zip(cols, QUESTIONS):
+            qd = load(q)
+            mark = "선택됨 · " if q == slug else ""
+            if col.button(f"{mark}{qd['label']}", key=f"pick_{q}", width="stretch"):
+                if q != slug:
+                    st.session_state.slug = q
+                    st.rerun()
+        st.markdown(f"<div class='do-qtext'>{D['question']}</div>", unsafe_allow_html=True)
         if st.button("에이전트에게 맡기기", type="primary"):
             box = st.status("에이전트가 일하는 중입니다 — 보통 20~40초 걸립니다.", expanded=True)
             rail = box.empty()
@@ -288,6 +296,22 @@ with t1:
             st.session_state["meta"] = meta
             box.update(label=f"에이전트가 일을 마쳤습니다 — {len(D['steps'])}단계", state="complete", expanded=False)
             st.rerun()
+        st.caption("보통 20~40초 걸립니다.")
+        st.markdown("<hr class='do-hr' style='margin:1.6rem 0 1.1rem'>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='do-g3'>"
+            "<div class='do-cell'><div class='do-k'>1. 진단</div><div class='do-v2'>어디에 얼마나 쓰이나</div>"
+            "<div class='do-d'>동네·업종·요일·날씨별 사용 흐름과 적립이 닿지 않는 곳을 찾습니다.</div></div>"
+            "<div class='do-cell'><div class='do-k'>2. 처방</div><div class='do-v2'>예산 안에서 어떻게 나눌까</div>"
+            "<div class='do-d'>적립률 반응도에서 앞당긴 소비를 걸러 내고, 배분안 다섯 개를 비교합니다.</div></div>"
+            "<div class='do-cell'><div class='do-k'>3. 실행물·반출</div><div class='do-v2'>바로 쓸 서류까지</div>"
+            "<div class='do-d'>보고서 PDF, 개선안·안내문, 반출 신청 문구와 점검표를 만듭니다.</div></div>"
+            "</div>", unsafe_allow_html=True)
+        st.markdown(
+            "<div class='do-why'><b>왜 질문이 두 개뿐인가요?</b> "
+            "자료를 올리는 데 1.6GB가 드는데 무료 서버는 1GB까지만 줍니다. 사무용 PC는 보통 8~16GB라 "
+            "<b>설치하면 그대로 돌아갑니다</b>. 여기서는 미리 돌려 둔 결과를 보여 주고, AI가 답 문장만 새로 씁니다. "
+            "숫자는 그때 실제로 나온 값 그대로입니다.</div>", unsafe_allow_html=True)
 
 with t2:
     import pandas as pd
