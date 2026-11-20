@@ -63,8 +63,16 @@ CSS = """<style>
 .do-saw div{border:1px solid #e3e1da;border-radius:6px;padding:10px 14px;font-size:.88rem;color:#5f5e5a}
 .do-saw b{color:#1b1b1a;display:block;margin-bottom:3px;font-size:.9rem}
 .do-hr{border:0;border-top:1px solid #e3e1da;margin:1.8rem 0 1.2rem;max-width:1000px}
-.do-why{max-width:820px;font-size:.86rem;color:#5f5e5a;margin:6px 0 0;line-height:1.6}
+.do-why{max-width:900px;font-size:.88rem;color:#5f5e5a;margin:6px 0 0;line-height:1.62}
 .do-why b{color:#1b1b1a}
+.do-why .h{color:#1b1b1a;font-weight:700;font-size:.96rem;margin:0 0 8px}
+.do-why table{border-collapse:collapse;width:100%;margin:0 0 12px;font-size:.88rem}
+.do-why th,.do-why td{border:1px solid #e3e1da;padding:7px 12px;text-align:left;vertical-align:top}
+.do-why th{background:#f6f5f2;color:#5f5e5a;font-weight:600}
+.do-why td:first-child{color:#5f5e5a;width:116px}
+.do-why td:nth-child(3){color:#1b1b1a}
+.do-why p{margin:0 0 8px;max-width:900px}
+.do-why code{background:#f6f5f2;border:1px solid #e3e1da;border-radius:4px;padding:1px 5px;font-size:.92em}
 /* 제목 블록 */
 .do-head{margin:2px 0 4px}
 .do-head h1{font-size:1.75rem;font-weight:700;margin:0 0 4px;letter-spacing:-.01em}
@@ -308,10 +316,23 @@ with t1:
             "<div class='do-d'>보고서 PDF, 개선안·안내문, 반출 신청 문구와 점검표를 만듭니다.</div></div>"
             "</div>", unsafe_allow_html=True)
         st.markdown(
-            "<div class='do-why'><b>왜 질문이 두 개뿐인가요?</b> "
-            "자료를 올리는 데 1.6GB가 드는데 무료 서버는 1GB까지만 줍니다. 사무용 PC는 보통 8~16GB라 "
-            "<b>설치하면 그대로 돌아갑니다</b>. 여기서는 미리 돌려 둔 결과를 보여 주고, AI가 답 문장만 새로 씁니다. "
-            "숫자는 그때 실제로 나온 값 그대로입니다.</div>", unsafe_allow_html=True)
+            "<div class='do-why'>"
+            "<div class='h'>이 화면과 설치판의 차이</div>"
+            "<table>"
+            "<tr><th></th><th>이 화면 (무료 서버)</th><th>설치판 (내 PC)</th></tr>"
+            "<tr><td>질문</td><td>미리 돌려 둔 두 가지</td><td>자유롭게</td></tr>"
+            "<tr><td>숫자 계산</td><td>미리 돌린 결과를 읽어 옵니다</td><td>그 자리에서 계산합니다</td></tr>"
+            "<tr><td>AI 답 작성</td><td><b>실제로 호출합니다</b></td><td><b>실제로 호출합니다</b></td></tr>"
+            "<tr><td>데이터</td><td>가상데이터</td><td>센터 CSV 또는 가상데이터</td></tr>"
+            "</table>"
+            "<p>무료 서버는 메모리를 1GB까지만 주는데 자료를 올리는 데만 1.6GB가 듭니다. "
+            "그래서 이 화면은 계산을 다시 하지 않고 미리 돌려 둔 결과를 읽어 옵니다 — "
+            "<b>화면의 숫자는 그 계산에서 실제로 나온 값이고, 답 문장은 지금 AI가 새로 쓴 것입니다.</b> "
+            "사무용 PC는 보통 8~16GB라 설치하면 전부 그대로 돌아갑니다.</p>"
+            "<p><b>설치</b> — 파일을 내려받아 압축을 풀고 <code>설치.bat</code> → <code>실행.bat</code>, "
+            "두 번 누르면 끝입니다. 센터 CSV가 없어도 첫 화면의 '가상데이터로 바로 체험하기'로 "
+            "질문부터 반출 서류까지 전 과정을 볼 수 있습니다.</p>"
+            "</div>", unsafe_allow_html=True)
 
 with t2:
     import pandas as pd
