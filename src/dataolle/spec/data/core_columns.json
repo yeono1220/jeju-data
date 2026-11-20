@@ -1,0 +1,64 @@
+{
+  "source": "제주빅데이터센터 데이터 명세서 v13 (2026.11.04) 컬럼 정의 중 핵심 데이터셋 발췌",
+  "columns": {
+    "1-08": [
+      ["base_year_month", "년월", "STRING", "202308"], ["dstrct_se", "지역구분", "STRING", "제주시 중부(서)"], ["city", "시군구", "STRING", "제주시"], ["area_type", "도심구분", "STRING", "도심"],
+      ["bjd", "법정동", "STRING", "노형동"], ["biz_cd", "업종코드", "STRING", "G47119"], ["biz_nm", "업종명", "STRING", "건강보조식품 소매업"], ["user_type", "이용자구분", "STRING", "내국인"],
+      ["tour_type", "관광구분", "STRING", "개별"], ["age", "연령대", "STRING", "10"], ["sex", "성별", "STRING", "여성"],
+      ["user_cnt", "이용자수", "INT", "16"], ["use_cnt", "이용건수", "INT", "17"], ["use_amt", "이용금액", "BIGINT", "365160"]
+    ],
+    "1-12": [
+      ["base_year_month", "년월", "STRING", "202308"], ["dstrct_se", "지역구분", "STRING", "제주시 중부(서)"], ["bjd", "법정동", "STRING", "노형동"], ["biz_cd", "업종코드", "STRING", "I56114"],
+      ["biz_nm", "업종명", "STRING", "서양식 음식점업"], ["user_type", "이용자구분", "STRING", "내국인"], ["tour_type", "관광구분", "STRING", "개별"], ["week", "요일구분", "STRING", "월요일"],
+      ["age", "연령대", "STRING", "10"], ["sex", "성별", "STRING", "남성"], ["user_cnt", "이용자수", "INT", "1"], ["use_cnt", "이용건수", "INT", "1"], ["use_amt", "이용금액", "BIGINT", "15000"]
+    ],
+    "1-14": [
+      ["base_year_month", "년월", "STRING", "202308"], ["dstrct_se", "지역구분", "STRING", "제주시 중부(서)"], ["bjd", "법정동", "STRING", "노형동"], ["biz_cd", "업종코드", "STRING", "I56114"],
+      ["biz_nm", "업종명", "STRING", "서양식 음식점업"], ["user_type", "이용자구분", "STRING", "내국인"], ["tour_type", "관광구분", "STRING", "개별"], ["time", "시간대", "STRING", "저녁"],
+      ["age", "연령대", "STRING", "30"], ["sex", "성별", "STRING", "여성"], ["user_cnt", "이용자수", "INT", "3"], ["use_cnt", "이용건수", "INT", "3"], ["use_amt", "이용금액", "BIGINT", "63150"]
+    ],
+    "1-17": [
+      ["base_year_month", "년월", "STRING", "201701"], ["city", "시군구", "STRING", "서귀포시"], ["owner_gb", "매장주 구분", "STRING", "내국인 개인"],
+      ["biz_cd", "업종코드", "STRING", "I56111"], ["biz_nm", "업종명", "STRING", "한식음식점업"], ["store_cnt", "매장수", "INT", "158"]
+    ],
+    "1-19": [
+      ["base_year_month", "년월", "STRING", "201811"], ["city_cd", "시군구코드", "STRING", "5011"], ["city_nm", "시군구명", "STRING", "제주시"], ["bjd_cd", "법정동코드", "STRING", "50110101"],
+      ["bjd_nm", "법정동명", "STRING", "일도일동"], ["biz_mid_cd", "중분류업종코드", "STRING", "Q01"], ["biz_mid_nm", "중분류업종명", "STRING", "간이주점"], ["biz_small_cd", "소분류업종코드", "STRING", "Q01001"],
+      ["biz_small_nm", "소분류업종명", "STRING", "꼬치구이전문점"], ["sale_amt", "총매출액", "BIGINT", "10341112850"], ["store_cnt", "표본수", "INT", "402"], ["use_cnt", "이용건수", "BIGINT", "194077"]
+    ],
+    "1-22": [
+      ["base_year_month", "년월", "STRING", "201811"], ["city_cd", "시군구코드", "STRING", "5011"], ["city_nm", "시군구명", "STRING", "제주시"], ["bjd_cd", "법정동코드", "STRING", "50110101"],
+      ["bjd_nm", "법정동명", "STRING", "일도일동"], ["biz_mid_cd", "중분류업종코드", "STRING", "Q01"], ["biz_mid_nm", "중분류업종명", "STRING", "간이주점"], ["biz_small_cd", "소분류업종코드", "STRING", "Q01001"],
+      ["biz_small_nm", "소분류업종명", "STRING", "꼬치구이전문점"], ["sex", "성별", "STRING", "남성"], ["age", "연령대", "STRING", "20"], ["week", "요일", "STRING", "월"],
+      ["time", "시간대", "STRING", "12~15"], ["user_cnt", "이용자수", "INT", "134"], ["use_cnt", "이용건수", "INT", "2124"], ["use_amt", "이용금액", "BIGINT", "194077"]
+    ],
+    "1-24": [
+      ["base_year_month", "년월", "STRING", "201811"], ["city_cd", "시군구코드", "STRING", "5011"], ["city_nm", "시군구명", "STRING", "제주시"], ["bjd_cd", "법정동코드", "STRING", "50110101"],
+      ["bjd_nm", "법정동명", "STRING", "일도일동"], ["menu_large_cd", "대분류메뉴코드", "STRING", "A"], ["menu_large_nm", "대분류메뉴명", "STRING", "밥류"], ["menu_mid_cd", "중분류메뉴코드", "STRING", "A01"],
+      ["menu_mid_nm", "중분류메뉴명", "STRING", "국밥류"], ["menu_small_cd", "소분류메뉴코드", "STRING", "A0101"], ["menu_small_nm", "소분류메뉴명", "STRING", "굴국밥"], ["menu_sub_cd", "세분류메뉴코드", "STRING", "A0101001"],
+      ["menu_sub_nm", "세분류메뉴명", "STRING", "고추굴국밥"], ["store_sale_amt", "점포당매출액", "BIGINT", "37163187"], ["store_sale_cnt", "점포당판매건수", "INT", "402"], ["unit_price", "판매단가", "INT", "21394"]
+    ],
+    "4-11": [
+      ["base_date", "날짜", "STRING", "20250501"], ["time", "시간", "STRING", "1"], ["dstrct_se", "지역구분", "STRING", "제주시 서부"], ["emd_cd", "행정동코드", "STRING", "50110250"],
+      ["emd_nm", "행정동명", "STRING", "제주시 한림읍"], ["sex", "성별", "STRING", "여성"], ["age", "연령대", "STRING", "2024"],
+      ["resd_pop_cnt", "거주인구", "STRING", "668.7907"], ["work_pop_cnt", "근무인구", "STRING", "16.8249"], ["visit_pop_cnt", "방문인구", "STRING", "168.2492"], ["resd", "거주지행정구역", "STRING", "제주"]
+    ],
+    "1-32": [
+      ["base_ymd", "승인일자", "STRING", "20230104"], ["zip_code", "우편번호", "STRING", ""], ["card_cd", "매입사 코드", "STRING", ""], ["card_nm", "매입사명", "STRING", ""],
+      ["biz_cd", "업종 코드", "STRING", ""], ["biz_nm", "업종명", "STRING", ""], ["induty", "표준업종변환", "STRING", ""], ["amount", "금액", "BIGINT", ""],
+      ["cnt", "건수", "INT", ""], ["emd", "읍면동", "STRING", ""], ["mrkt_nm", "전통시장", "STRING", ""]
+    ],
+    "5-02": [
+      ["base_date", "날짜", "STRING", "20140101"], ["observatory_code", "관측소 코드", "STRING", "328"], ["average_temperature", "평균 기온", "DOUBLE", "9.1"], ["lowest_temperature", "최저 기온", "DOUBLE", "6"],
+      ["lowest_temperature_time", "최저 기온 시각", "STRING", "2052"], ["highest_temperature", "최고 기온", "DOUBLE", "13.2"], ["highest_temperature_time", "최고 기온 시각", "STRING", "1348"], ["daily_rainfall", "일강수량", "DOUBLE", "0"],
+      ["maximum_wind_speed", "최대 순간 풍속", "DOUBLE", "5.2"], ["maximum_wind_speed_time", "최대 순간 풍속 시간", "STRING", "1246"], ["average_wind_speed", "평균 풍속", "DOUBLE", "1.6"], ["maximum_wind_speed_direction", "최대 순간 풍속 풍향", "DOUBLE", "316.3"]
+    ]
+  },
+  "value_semantics": {
+    "4-11.resd_pop_cnt": "해당 시각 정각 측정 거주인구(명, 추정치·소수). 시간대를 더하면 연인원이며 실제 인구 수가 아님.",
+    "4-11.work_pop_cnt": "해당 시각 정각 측정 근무인구(명, 추정치·소수).",
+    "4-11.visit_pop_cnt": "해당 시각 정각 측정 방문인구(명, 추정치·소수).",
+    "1-19.store_cnt": "표본수(POS 표본 점포 수). 전체 점포 수가 아님.",
+    "1-08.user_type": "카드 실소유자 기준(비씨카드). 비씨카드 결제분 간편결제 포함."
+  }
+}
