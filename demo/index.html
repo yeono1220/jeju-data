@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>데이터올레 — 화면 미리보기</title>
+<meta name="description" content="데이터올레 실제 화면을 그대로 옮긴 클릭형 미리보기. 실제 분석은 내려받아 설치해야 동작합니다.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#1b1b1a;font:17px/1.62 "Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+button{font:inherit}
+
+/* 미리보기임을 알리는 띠 — 앱 화면 밖 */
+.bar{position:sticky;top:0;z-index:40;background:#1b1b1a;color:#fff;padding:9px 0;font-size:.9rem}
+.bar .w{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.bar b{color:#fff}
+.bar a{color:#fff;text-decoration:underline;white-space:nowrap}
+.w{max-width:1240px;margin:0 auto;padding:0 20px}
+
+.lay{display:grid;grid-template-columns:270px 1fr;gap:0;min-height:760px;border:1px solid #e3e1da;border-radius:8px;margin:18px 0 10px;overflow:hidden}
+.side{background:#f6f5f2;border-right:1px solid #e3e1da;padding:22px 20px}
+.side h3{font-size:1.05rem;margin:0 0 2px}
+.side .sub{color:#5f5e5a;font-size:.88rem;margin:0 0 16px}
+.side hr{border:0;border-top:1px solid #e3e1da;margin:16px 0}
+.side p{font-size:.92rem;margin:0 0 9px}
+.side .cap{color:#5f5e5a;font-size:.84rem;margin:0 0 7px;line-height:1.5}
+.main{padding:20px 28px 44px;background:#fff}
+
+.ribbon{background:#fff4df;color:#8a4b00;border:1px solid #f0d8ae;border-radius:6px;padding:7px 13px;font-size:.92rem;margin-bottom:12px}
+.tabs{display:flex;gap:20px;border-bottom:1px solid #e3e1da;margin-bottom:6px;flex-wrap:wrap}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:8px 2px 10px;color:#1b1b1a;font-weight:600;cursor:pointer;font-size:1rem}
+.tabs button.on{color:#1c5cab;border-bottom-color:#1c5cab}
+.crumb{color:#5f5e5a;font-size:.9rem;margin:14px 0 18px}
+.crumb b{color:#1c5cab}
+.crumb span{color:#c9c7c0;margin:0 5px}
+
+h2.t{font-size:1.65rem;margin:6px 0 6px}
+h3.s{font-size:1.18rem;margin:30px 0 8px}
+p{max-width:760px;margin:0 0 13px}
+.muted{color:#5f5e5a}
+.small{font-size:.9rem}
+
+.btn{border:1px solid #e3e1da;background:#fff;border-radius:6px;padding:9px 16px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:#1c5cab;color:#1c5cab}
+.btn.p{background:#1c5cab;border-color:#1c5cab;color:#fff}
+.btn.p:hover{color:#fff;opacity:.92}
+.btn.q{color:#8a4b00}
+.btn.wide{width:100%;text-align:center}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.ex{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0}
+.ex button{text-align:center;padding:10px 8px;font-weight:600}
+textarea{width:100%;max-width:980px;min-height:84px;border:1px solid #e3e1da;border-radius:6px;padding:11px 13px;font:inherit;resize:vertical}
+
+.cards{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin:14px 0 18px;max-width:1000px}
+.c{border:1px solid #e3e1da;border-radius:6px;padding:14px 16px}
+.c.lead{background:#f6f5f2;border-color:#d9d7cf}
+.k{color:#5f5e5a;font-size:.84rem;margin-bottom:4px}
+.v{font-size:1.42rem;font-weight:700;line-height:1.25;font-variant-numeric:tabular-nums}
+.v2{font-size:1.18rem;font-weight:700;font-variant-numeric:tabular-nums}
+.d{color:#5f5e5a;font-size:.86rem;margin-top:6px;line-height:1.5}
+
+table{border-collapse:collapse;width:100%;max-width:1060px;font-size:.93rem;margin:10px 0 6px}
+th,td{border:1px solid #e3e1da;padding:7px 11px;text-align:left}
+th{background:#f6f5f2;color:#5f5e5a;font-weight:600}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.rec td{background:#eef2f8;font-weight:700}
+
+.tl{border-left:2px solid #e3e1da;margin:6px 0 6px 6px;padding:2px 0 2px 16px;max-width:860px}
+.tl .r{position:relative;padding:6px 0}
+.tl .r:before{content:"";position:absolute;left:-22px;top:13px;width:8px;height:8px;border-radius:50%;background:#c9c7c0}
+.tl .r.plan:before,.tl .r.answer:before{background:#1c5cab}
+.tl .kk{color:#5f5e5a;font-size:.78rem}
+.tl .tt{font-weight:600}
+.tl .dd{color:#5f5e5a;font-size:.9rem}
+.saw{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:860px;margin:14px 0 6px}
+.saw div{border:1px solid #e3e1da;border-radius:6px;padding:10px 14px;font-size:.88rem;color:#5f5e5a}
+.saw b{color:#1b1b1a;display:block;margin-bottom:3px;font-size:.9rem}
+
+.quote{background:#f6f5f2;border:1px solid #e3e1da;border-radius:6px;padding:14px 17px;max-width:900px;font-size:.95rem;line-height:1.62}
+.warn{background:#fffbe9;border:1px solid #f0e3b0;color:#6b5a16;border-radius:6px;padding:10px 14px;max-width:900px;font-size:.93rem;margin:12px 0}
+.prog{border:1px solid #e3e1da;border-radius:6px;padding:16px 18px;max-width:760px}
+.track{height:7px;background:#e3e1da;border-radius:4px;overflow:hidden;margin:11px 0 7px}
+.fill{height:100%;width:0;background:#1c5cab;transition:width .35s}
+label.rad{display:block;margin:6px 0;font-size:.95rem;cursor:pointer}
+hr.sep{border:0;border-top:1px solid #e3e1da;margin:28px 0 20px;max-width:1000px}
+.hide{display:none}
+
+/* 미리보기에서 못 하는 동작을 눌렀을 때 */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#1b1b1a;color:#fff;padding:13px 18px;border-radius:8px;font-size:.93rem;max-width:620px;box-shadow:0 6px 24px rgba(0,0,0,.22);z-index:60}
+.toast a{color:#9ec3f0}
+.foot{color:#5f5e5a;font-size:.9rem;padding:8px 0 56px;max-width:900px}
+@media(max-width:900px){.lay{grid-template-columns:1fr}.side{border-right:0;border-bottom:1px solid #e3e1da}
+.cards,.ex,.saw{grid-template-columns:1fr}.main{padding:16px 16px 36px}}
+</style></head><body>
+
+<div class="bar"><div class="w">
+<span><b>화면 미리보기입니다.</b> 눌러 볼 수는 있지만 계산은 하지 않습니다 — 실제 분석은 내려받아 설치해야 동작합니다.</span>
+<span><a href="https://github.com/yeono1220/jeju-data/archive/refs/heads/main.zip">내려받기</a> · <a href="../">소개</a></span>
+</div></div>
+
+<div class="w">
+<div class="lay">
+  <aside class="side">
+    <h3>데이터올레</h3>
+    <p class="sub">탐나는전 캐시백 설계 에이전트</p>
+    <hr>
+    <p id="sideData"><b>데이터</b> 아직 없음</p>
+    <p><b>AI</b> 사용 안 함(규칙 기반)</p>
+    <p class="cap">결과 자동 삭제 켜짐</p>
+    <p class="cap" id="sideWs">이번 작업 폴더: 파일 0개 · 0.0MB</p>
+    <hr>
+    <button class="btn q wide" onclick="nope('작업 끝내기')">작업 끝내기(결과 삭제)</button>
+  </aside>
+
+  <section class="main">
+    <div class="ribbon hide" id="ribbon"><b>가상데이터</b> — 실제와 같은 형식으로 만든 가짜 자료입니다. 화면과 보고서의 모든 숫자는 시연용이며, 실제 의사결정에 쓰지 마세요.</div>
+
+    <div class="tabs">
+      <button class="on" data-t="q" onclick="tab('q')">① 질문</button>
+      <button data-t="d" onclick="tab('d')">② 데이터</button>
+      <button data-t="r" onclick="tab('r')">③ 분석 결과</button>
+      <button data-t="e" onclick="tab('e')">④ 반출 신청</button>
+      <button data-t="a" onclick="tab('a')">관리자</button>
+    </div>
+    <div class="crumb" id="crumb"><b>데이터 불러오기</b><span>›</span>질문하기<span>›</span>결과 보기<span>›</span>반출 신청</div>
+
+    <!-- ① 질문 -->
+    <div id="pq">
+      <div id="empty">
+        <h2 class="t">탐나는전 캐시백 설계 에이전트</h2>
+        <p class="muted">질문 한 줄을 넣으면 데이터를 고르고 진단·효과 추정·예산 배분안·보고서·실행물·반출 서류까지 만듭니다. 숫자는 모두 이 PC에서 계산합니다.<br>먼저 데이터가 있어야 합니다. 센터에서 받은 CSV가 없으면 아래 버튼으로 바로 해 볼 수 있습니다.</p>
+        <div class="row"><button class="btn p" onclick="loadDemo()">가상데이터로 바로 체험하기</button></div>
+        <p class="muted small">실제와 같은 형식의 가짜 자료를 만듭니다(처음 한 번 1~2분, 약 700MB). 모든 결과에 '가상데이터'라고 표시됩니다.</p>
+        <div class="cards" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="c"><div class="k">1. 진단</div><div class="v2">어디에 얼마나 쓰이나</div><div class="d">동네·업종·요일·날씨별 사용 흐름과 적립이 닿지 않는 곳을 찾습니다.</div></div>
+          <div class="c"><div class="k">2. 처방</div><div class="v2">예산 안에서 어떻게 나눌까</div><div class="d">적립률 반응도에서 앞당긴 소비를 걸러 내고, 배분안 다섯 개의 소진일과 몫을 비교합니다.</div></div>
+          <div class="c"><div class="k">3. 실행물·반출</div><div class="v2">바로 쓸 서류까지</div><div class="d">보고서 PDF, 개선안·안내문·홍보 문구, 반출 신청 문구와 점검표를 만듭니다.</div></div>
+        </div>
+      </div>
+
+      <div id="gen" class="hide">
+        <div class="prog">
+          <p style="margin:0"><b>가상데이터를 만드는 중입니다.</b> 처음 한 번만 걸립니다. 창을 닫지 말고 기다려 주세요.</p>
+          <div class="track"><div class="fill" id="fill"></div></div>
+          <p class="muted small" style="margin:0" id="genTxt">준비하는 중…</p>
+        </div>
+        <p class="muted small">※ 미리보기라 빠르게 넘깁니다. 실제로는 1~2분 걸립니다.</p>
+      </div>
+
+      <div id="ask" class="hide">
+        <h2 class="t">무엇을 알고 싶으세요?</h2>
+        <p class="muted">사용 패턴 진단 → 적립률 반응도 추정(앞당긴 소비 분리) → 예산 배분안 시뮬레이션(소진일·전통시장 몫·쏠림) → 개선안·안내문 → 효과 확인까지 한 번에 합니다. 질문 속 숫자는 외부 AI로 보내지 않습니다.</p>
+        <p style="margin-bottom:6px"><b>예시 질문</b> — 누르면 아래 칸에 들어갑니다. 고쳐 써도 됩니다.</p>
+        <div class="ex" id="exBtns"></div>
+        <textarea id="qbox" placeholder="예) 일도1동, 탐나는전으로 동네를 살릴 수 있을까요?"></textarea>
+        <div class="row">
+          <button class="btn p" onclick="runAgent()">에이전트에게 맡기기</button>
+          <button class="btn" onclick="nope('직접 설정해서 분석')">직접 설정해서 분석</button>
+        </div>
+      </div>
+
+      <div id="run" class="hide">
+        <p><b>에이전트가 일하는 중입니다</b> — 보통 20~40초 걸립니다.</p>
+        <div class="tl" id="tl"></div>
+      </div>
+
+      <div id="ans" class="hide">
+        <h2 class="t">답 <span style="font-size:.86rem;font-weight:600;color:#1c5cab;border:1px solid #c6d8ef;border-radius:6px;padding:2px 8px;vertical-align:middle">규칙 기반 에이전트</span></h2>
+        <div class="cards" id="conc"></div>
+        <p style="margin-bottom:6px"><b>다음 단계</b></p>
+        <div class="ex">
+          <button class="btn" onclick="nope('보고서 PDF 받기')">보고서 PDF 받기</button>
+          <button class="btn" onclick="nope('실행물 만들기')">실행물 만들기</button>
+          <button class="btn" onclick="nope('반출 묶음 만들기')">반출 묶음 만들기</button>
+        </div>
+        <hr class="sep">
+        <p><b>진단</b> · 지금 어떤 상태인가</p>
+        <p>2023.01~2025.09 사용금액 14,463.5억 원(건당 21,512원). 도민 소비 대비 탐나는전이 가장 덜 쓰이는 지역은 신효동(침투지수 37.9). 적립률 1%p당 탐나는전 사용액 변화는 4.8%(앞당긴 소비 제외)이고, 높은 기간만 본 단순 비교(5.9%)는 반응을 22.6% 부풀립니다. 쓰지 않은 달 예측 오차 1.8%. 학원 업종은 높은 적립률 기간 증가분의 45.7%가 앞당긴 소비(건당 금액 59.8%)였습니다.</p>
+        <p><b>처방</b> · 그래서 어떻게 나눌까</p>
+        <p>C안 동네 살리기 집중형: 기본 5.8%에 원도심·살리기 대상 동네 +3.0%p, 전통시장 +5.0%p, 오일장 장날 시장 +3.0%p, 비 오는 날 시장 +3.0%p 가산(상한 20.0%). 지금 방식이면 적립 예산 400.0억 원이 7월께 바닥나지만, 이 안은 12개월 동안 이어지고 전통시장 몫이 7.6%에서 20.6%로 바뀝니다.</p>
+        <p><b>실행물</b> · 바로 쓸 서류</p>
+        <p>C안으로 도청 개선안 초안, 상인회 안내문, 홍보 문구(현수막·SNS 문자), 어르신 안내문, 추진 일정·체크리스트를 함께 만들었습니다.</p>
+        <p><b>효과 확인</b> · 시행 뒤 다시 재기</p>
+        <p>시행 12주 뒤 '2026년 1월부터 바꾼 적립 방식의 효과를 전통시장 기준으로 확인해 줘'라고 물으면 전후 효과를 판정하고 다음 배분(C'안)을 다시 계산합니다.</p>
+        <div class="saw">
+          <div><b>AI가 본 것</b>없음 — AI를 쓰지 않고 규칙 기반으로 돌렸습니다. 밖으로 나간 내용이 없습니다.</div>
+          <div><b>AI가 보지 못한 것</b>센터 원본 자료 · 실제 수치 · 개인 정보</div>
+        </div>
+        <p class="muted small">표·그림의 숫자는 모두 이 PC(DuckDB)가 계산했습니다. 실제로 보낸 내용은 관리자 탭의 전송 기록에서 볼 수 있습니다.</p>
+        <hr class="sep">
+        <h3 class="s">처방 설계 — 탐나는전 적립 예산 배분</h3>
+        <p>추천: <b>C안 동네 살리기 집중형</b> — 예산을 기간 끝까지 유지하면서 원도심·전통시장·살리기 대상 동네의 몫을 가장 많이 늘립니다.</p>
+        <div id="scen1"></div>
+      </div>
+    </div>
+
+    <!-- ② 데이터 -->
+    <div id="pd" class="hide">
+      <h2 class="t">데이터 불러오기</h2>
+      <p class="muted">센터에서 내려받은 CSV(Results_….csv) 폴더를 지정하면 어떤 데이터·몇 월인지 자동으로 알아냅니다. 원본은 이 PC 메모리 안에서만 읽습니다.</p>
+      <div class="row"><button class="btn" onclick="nope('폴더 읽기')">폴더 읽기</button><button class="btn" onclick="loadDemo()">시연용 가상데이터로 체험하기</button></div>
+      <div id="dtab"></div>
+    </div>
+
+    <!-- ③ 분석 결과 -->
+    <div id="pr" class="hide">
+      <div id="rEmpty"><p class="muted">① 질문 탭에서 분석을 끝내면 결과가 여기에 나타납니다.</p></div>
+      <div id="rFull" class="hide">
+        <h2 class="t">제주 전체 탐나는전 캐시백 설계</h2>
+        <p class="muted small">가상데이터(시연용)로 만든 결과입니다. 실제 의사결정에 쓰지 마세요.</p>
+        <div class="cards" id="conc2"></div>
+        <p class="muted small">그림 14개 · 표·그림 반출 검수 24/24 통과 · 비공개(x) 처리한 칸 0개 · 만드는 데 18초</p>
+        <div class="ex">
+          <button class="btn" onclick="nope('보고서 PDF')">보고서 PDF</button>
+          <button class="btn" onclick="nope('편집용 DOCX')">편집용 DOCX</button>
+          <button class="btn" onclick="nope('미리보기 HTML')">미리보기 HTML</button>
+        </div>
+        <p class="muted small">반출 신청에는 PDF·PNG를 쓰세요(텍스트·HTML·엑셀은 원칙적으로 반출 불가). DOCX는 센터 안 편집용입니다.</p>
+        <h3 class="s">기관 보고용 문단(현황 보고·보도자료)</h3>
+        <div class="quote">제주빅데이터센터 탐나는전 이용 자료(2023.01~2025.09)에 따르면 제주 전체의 탐나는전 사용금액은 14,463.5억 원이다. 도민 카드 소비 대비 탐나는전 침투지수가 가장 낮은 지역은 신효동(37.9, 제주 평균=100)으로 가맹점 확대가 우선 필요하다. 원도심의 탐나는전 침투지수는 125.4(제주 평균=100)로 탐나는전 의존도가 높아 캐시백 변동의 영향을 크게 받는다. 2017년 12월 대비 2025년 12월 0~14세 거주인구는 11.6% 감소하였으며, 감소 폭이 큰 동네(추자면, 우도면, 한경면)는 학령인구 감소에 대비한 지원 검토가 필요하다. 비 오는 날 전통시장 사용금액은 맑은 날보다 24.0% 감소하여 우천 대응책이 필요하다. 탐나는전 자료의 자연실험(2025년 4~6월 적립률 상향)으로 추정한 적립률 1%p당 사용액 변화는 4.8%이며, 선결제 등 앞당긴 소비를 걷어 내지 않으면 5.9%로 과대 추정된다. 현행 방식(기본 10.0%, 명절 달 20.0%)으로는 적립 예산 400.0억 원이 7월께 소진되므로, 기본 5.8%에 원도심·살리기 대상 동네 +3.0%p, 전통시장 +5.0%p, 오일장 장날 시장 +3.0%p, 비 오는 날 시장 +3.0%p 가산(상한 20.0%)하는 배분(C안)으로 12개월 동안 적립을 유지하면서 전통시장 몫을 20.6%로 높일 수 있다.</div>
+        <h3 class="s">처방 설계 — 탐나는전 적립 예산 배분</h3>
+        <div id="scen2"></div>
+      </div>
+    </div>
+
+    <!-- ④ 반출 신청 -->
+    <div id="pe" class="hide">
+      <h2 class="t">반출 신청 도우미</h2>
+      <p class="muted">반출할 파일(PDF·PNG)을 한 폴더에 모으고, 신청서에 붙여 넣을 활용 사유·설명과 심사자용 점검표를 만듭니다.<br>최종 승인은 센터 심사로 결정됩니다.</p>
+      <p style="margin-bottom:4px"><b>활용처</b></p>
+      <label class="rad"><input type="radio" name="use"> 사업계획서 — 창업 사업계획서의 시장분석(상권 규모·고객 특성·영업시간 판단) 근거 자료</label>
+      <label class="rad"><input type="radio" name="use"> 기관 현황자료 — 기관 내부 현황자료(읍면동 소비·유동인구 현황 보고)</label>
+      <label class="rad"><input type="radio" name="use"> 논문 — 학술 논문의 실증분석 표·그림 자료</label>
+      <label class="rad"><input type="radio" name="use" checked> 정책 협의 자료 — 정책 협의 자료(제주도·관계기관 개선안 검토, 예: 탐나는전 적립 방식 변경)</label>
+      <div class="row"><button class="btn p" onclick="makePack()">반출 묶음 만들기</button></div>
+      <div id="packOut" class="hide">
+        <div class="warn">가상데이터로 만든 결과입니다. 실제 반출 신청에는 센터 실데이터로 다시 만든 파일을 쓰세요.</div>
+        <p>반출 신청용 파일 <b>17개</b>를 한 폴더에 모았습니다.</p>
+        <h3 class="s">① 활용 사유(신청서에 붙여 넣기)</h3>
+        <div class="quote">Python·DuckDB 기반 분석 도구 '데이터올레'로 탐나는전 이용 현황·카드 이용 현황(읍면동)_v02·내국인 유동인구(읍면동)_v02·내국인 유동인구(읍면동)_v01 외 1종 데이터를 기간 합계, 평균값(건당 사용금액) 산출, 월별 추이, 가맹점 구분별 분포, 구성비, 전통시장별 분포, 업종별 분포, 오일시장별 분포 방식으로 분석 후, 10 미만 수치 비공개(x) 처리, 합계로 역산되지 않도록 추가 비공개, 비율·증감률 등 응용집계 변환, 바탕 인원 10 이상 평균값만 표시로 가공하여 '제주 전체 탐나는전 캐시백 설계'의 보고서(PDF 1개와 그림 PNG 14개)와 실행물 묶음(개선안 초안·안내문·홍보 문구, PDF 1개) 작성 및 정책 협의 자료(제주도·관계기관 개선안 검토, 예: 탐나는전 적립 방식 변경)에 활용</div>
+        <h3 class="s">② 설명란 문구</h3>
+        <div class="quote">[반출 파일] 보고서 PDF 1개(18쪽), 실행물 묶음 PDF 1개, 그림 PNG 14개, 설명자료 PDF 1개(00_반출신청_설명자료.pdf)<br>[내용] 진단 · 효과 추정 · 처방 설계 · 실행물 · 효과 확인 — 표와 그림마다 쓰인 데이터와 기간, 가공 방식, 비공개 처리 내역을 함께 적었습니다.</div>
+      </div>
+    </div>
+
+    <!-- 관리자 -->
+    <div id="pa" class="hide">
+      <h2 class="t">관리자</h2>
+      <p class="muted">AI 연결, 전송 기록, 결과 삭제 설정을 봅니다. 처음 쓸 때 PIN을 만듭니다.</p>
+      <p style="max-width:300px;margin-bottom:4px"><b>새 PIN</b></p>
+      <input type="password" style="width:260px;padding:9px 12px;border:1px solid #e3e1da;border-radius:6px;font:inherit">
+      <p style="max-width:300px;margin:12px 0 4px"><b>PIN 확인</b></p>
+      <input type="password" style="width:260px;padding:9px 12px;border:1px solid #e3e1da;border-radius:6px;font:inherit">
+      <div class="row"><button class="btn p" onclick="nope('PIN 만들기')">PIN 만들기</button></div>
+      <p class="muted small">기관 Claude API 키가 있으면 여기서 넣고 '연결 테스트'를 누르면 AI 모드로 씁니다. 키가 없어도 규칙 기반으로 결과는 같습니다.</p>
+    </div>
+  </section>
+</div>
+
+<p class="foot">이 페이지는 실제 화면을 그대로 옮긴 <b>미리보기</b>입니다. 눌러서 흐름은 볼 수 있지만 계산·파일 생성은 하지 않습니다.
+실제 프로그램은 Python과 Streamlit으로 만든 <b>설치형 도구</b>로, 분석 PC 안에서만 동작합니다 —
+<a href="https://github.com/yeono1220/jeju-data/archive/refs/heads/main.zip">파일을 내려받아</a> 압축을 풀고 <code>설치.bat</code> → <code>실행.bat</code> 두 번이면 위 화면이 그대로 열립니다.
+화면과 숫자는 모두 가상데이터로 만든 시연 결과입니다.</p>
+</div>
+
+<script>
+var EX = [
+ ["동네 진단 — 일도1동","일도1동, 탐나는전으로 동네를 살릴 수 있을까요?"],
+ ["예산 400억 원 배분","예산 400억 원으로 탐나는전 적립을 1년 내내 이어 가려면 어떻게 나눠야 해요?"],
+ ["전통시장 추가 적립 효과","전통시장에 적립률을 더 얹으면 매출이 얼마나 늘까요?"],
+ ["앞당긴 소비 걸러 내기","적립률을 올렸을 때 늘어난 소비 중 진짜 새 소비는 얼마인가요?"],
+ ["쏠림 막는 배분","학원·교육 업종 쏠림을 줄이면서 예산을 1년 쓰려면?"],
+ ["창업 시장분석 — 애월읍 카페","애월읍에 카페를 열려는데 상권이 어떤가요?"]
+];
+var DATA = [
+ ["1-08 카드 이용 현황(읍면동)_v02","202501~202512",12,12],
+ ["1-12 카드 이용 현황(요일별)_v02","202510~202512",3,3],
+ ["1-14 카드 이용 현황(시간대)_v02","202510~202512",3,3],
+ ["1-17 제주도 내 업종별 매장 수","202501~202512",12,12],
+ ["1-19 외식업 포스 이용 현황(읍면동)","202501~202512",12,12],
+ ["1-22 외식업 포스 고객 이용 현황(읍면동)","202510~202512",3,3],
+ ["1-24 외식업 포스 메뉴 이용 현황(읍면동)","202501~202512",12,12],
+ ["1-32 탐나는전 이용 현황","202301~202509",33,33],
+ ["4-10 내국인 유동인구(읍면동)_v01","201712~202312",4,4],
+ ["4-11 내국인 유동인구(읍면동)_v02","202512~202512",1,1],
+ ["5-02 일일 날씨 정보","202410~202509",12,12]
+];
+var SCEN = [
+ ["A안 현행형","6.6개월(7월 20일 소진)","21.7%","7.6%","36.6%","18.3%","11.2%","1.4배",0],
+ ["B안 균등 유지형","12개월 끝까지","21.7%","7.6%","36.6%","18.3%","11.0%","1.4배",0],
+ ["C안 동네 살리기 집중형 ★추천","12개월 끝까지","29.8%","20.6%","50.6%","12.8%","9.4%","2.2배",1],
+ ["D안 사각지대 보강형","12개월 끝까지","17.8%","6.2%","30.8%","33.0%","11.2%","1.1배",0],
+ ["E안 쏠림 방지형","12개월 끝까지","29.2%","21.0%","49.6%","13.1%","6.5%","2.2배",0]
+];
+var RULES = [
+ ["A안 현행형","기본 10%, 설·추석이 있는 달(2·9월) 20%"],
+ ["B안 균등 유지형","모든 결제 7.8%"],
+ ["C안 동네 살리기 집중형 ★추천","기본 5.8% + 원도심·살리기 대상 동네 +3%p, 전통시장 +5%p, 오일장 장날 시장 +3%p, 비 오는 날 시장 +3%p(상한 20%)"],
+ ["D안 사각지대 보강형","기본 6.7% + 사각지대 동네 +5%p(상한 20%)"],
+ ["E안 쏠림 방지형","기본 6.0% + 원도심·살리기 대상 동네 +3%p, 전통시장 +5%p, 오일장 장날 시장 +3%p, 비 오는 날 시장 +3%p(상한 20%), 건당 적립 1만 원 상한, 학원·교육 업종은 기본률만"]
+];
+var STEPS = [
+ ["plan","계획","질문을 읽고 코스를 골랐습니다","탐나는전 캐시백 설계 — 진단 → 효과 추정 → 처방 설계 → 실행물 → 효과 확인"],
+ ["tool","도구 실행","데이터 목록을 확인했습니다","탐나는전 이용 현황(33개월), 카드 이용 현황, 내국인 유동인구, 일일 날씨 정보 외 7종"],
+ ["result","결과","사용 흐름을 진단했습니다","사용금액 14,463.5억 원 · 건당 21,512원 · 침투지수 최저 신효동(37.9)"],
+ ["tool","도구 실행","적립률 반응도를 추정했습니다","2025년 4~6월 적립률 상향을 자연실험으로 사용"],
+ ["result","결과","앞당긴 소비를 걷어 냈습니다","1%p당 4.8%(단순 비교 5.9%는 22.6% 과대) · 백테스트 오차 1.8%"],
+ ["tool","도구 실행","배분안 다섯 개를 시뮬레이션했습니다","같은 예산 400.0억 원 · A~E안 · 소진일과 몫 계산"],
+ ["result","결과","C안을 추천했습니다","12개월 유지 · 전통시장 7.6% → 20.6%"],
+ ["tool","도구 실행","보고서와 실행물을 만들었습니다","보고서 PDF 18쪽 · 그림 14개 · 실행물 묶음 PDF"],
+ ["answer","답","반출 검수를 통과했습니다","표·그림 24/24 통과 · 비공개(x) 처리 0칸"]
+];
+var CARDS = '<div class="c lead"><div class="k">추천하는 배분안</div><div class="v">C안 동네 살리기 집중형</div><div class="d">예산을 기간 끝까지 유지하면서 원도심·전통시장·살리기 대상 동네의 몫을 가장 많이 늘립니다</div></div>'
++'<div class="c"><div class="k">예산이 버티는 기간</div><div class="v2">12개월 끝까지</div><div class="d">지금 방식(A안) 6.6개월(7월 20일 소진)</div></div>'
++'<div class="c"><div class="k">전통시장에 가는 몫</div><div class="v2">20.6%</div><div class="d">지금 방식(A안) 7.6%</div></div>';
+
+var S={loaded:false,answered:false};
+function $(id){return document.getElementById(id)}
+function show(id,on){$(id).classList.toggle('hide',!on)}
+
+function tab(t){
+  ['q','d','r','e','a'].forEach(function(x){show('p'+x,x===t)});
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'),function(b){b.classList.toggle('on',b.dataset.t===t)});
+  crumb();
+}
+function crumb(){
+  var i = !S.loaded?0:(S.answered?2:1), L=['데이터 불러오기','질문하기','결과 보기','반출 신청'];
+  $('crumb').innerHTML = L.map(function(x,n){return n===i?'<b>'+x+'</b>':x}).join('<span>›</span>');
+}
+function scenHTML(){
+  var h='<table><tr><th>적립 방식</th><th>예산 유지</th><th>원도심</th><th>전통시장</th><th>대상 동네</th><th>사각지대</th><th>학원·교육</th><th>고령 동네 1인당</th></tr>';
+  SCEN.forEach(function(r){h+='<tr'+(r[8]?' class="rec"':'')+'><td>'+r[0]+'</td><td>'+r[1]+'</td>'
+    +[2,3,4,5,6,7].map(function(i){return '<td class="n">'+r[i]+'</td>'}).join('')+'</tr>'});
+  h+='</table><p style="margin:14px 0 4px"><b>적립 방식별 규칙</b></p><ul style="margin:0;font-size:.93rem">';
+  RULES.forEach(function(r){h+='<li><b>'+r[0]+'</b> — '+r[1]+'</li>'});
+  return h+'</ul>';
+}
+function dataHTML(){
+  var h='<table><tr><th>데이터</th><th>기간</th><th>개월</th><th>파일</th><th>분석 지원</th></tr>';
+  DATA.forEach(function(r){h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n">'+r[2]+'</td><td class="n">'+r[3]+'</td><td>예</td></tr>'});
+  return h+'</table>';
+}
+function loadDemo(){
+  if(S.loaded){tab('d');return}
+  tab('q'); show('empty',false); show('gen',true);
+  var stages=[[15,'내국인 유동인구·탐나는전 자료'],[31,'탐나는전·날씨 자료'],[86,'카드·외식업 포스 자료(월별)'],[107,'요일·시간대·고객 자료']];
+  var n=0, iv=setInterval(function(){
+    n+=4; if(n>107)n=107;
+    var st=stages.find(function(s){return n<s[0]})||stages[3];
+    $('fill').style.width=(n/107*100)+'%';
+    $('genTxt').textContent=st[1]+' — 파일 '+n+'/107개';
+    if(n>=107){clearInterval(iv); setTimeout(done,420)}
+  },90);
+  function done(){
+    S.loaded=true; show('gen',false); show('ask',true); show('ribbon',true);
+    $('sideData').innerHTML='<b>데이터</b> 11종 불러옴<br><span style="color:#8a4b00;border:1px solid #f0d8ae;background:#fff4df;border-radius:6px;padding:1px 7px;font-size:.84rem">가상데이터</span>';
+    $('sideWs').textContent='이번 작업 폴더: 파일 1개 · 0.0MB · 세션 20261120_043240_3c17e4';
+    $('dtab').innerHTML=dataHTML(); crumb();
+  }
+}
+function runAgent(){
+  if(!$('qbox').value.trim()){$('qbox').value=EX[1][1]}
+  show('ask',false); show('run',true); $('tl').innerHTML='';
+  var i=0, iv=setInterval(function(){
+    var s=STEPS[i++];
+    $('tl').innerHTML+='<div class="r '+s[0]+'"><div class="kk">'+s[1]+'</div><div class="tt">'+s[2]+'</div><div class="dd">'+s[3]+'</div></div>';
+    if(i>=STEPS.length){clearInterval(iv); setTimeout(fin,600)}
+  },480);
+  function fin(){
+    S.answered=true; show('run',false); show('ans',true);
+    $('conc').innerHTML=CARDS; $('conc2').innerHTML=CARDS;
+    $('scen1').innerHTML=scenHTML(); $('scen2').innerHTML=scenHTML();
+    show('rEmpty',false); show('rFull',true);
+    $('sideWs').textContent='이번 작업 폴더: 파일 21개 · 8.0MB · 세션 20261120_043240_3c17e4';
+    crumb();
+  }
+}
+function makePack(){
+  if(!S.answered){nope('반출 묶음 만들기(먼저 ① 질문에서 분석을 끝내세요)');return}
+  show('packOut',true);
+}
+var tm;
+function nope(what){
+  var t=document.querySelector('.toast'); if(t)t.remove();
+  var d=document.createElement('div'); d.className='toast';
+  d.innerHTML='<b>'+what+'</b> — 미리보기에서는 실제로 동작하지 않습니다. 계산과 파일 만들기는 설치한 프로그램이 합니다. '
+   +'<a href="https://github.com/yeono1220/jeju-data/archive/refs/heads/main.zip">내려받기</a>';
+  document.body.appendChild(d); clearTimeout(tm); tm=setTimeout(function(){d.remove()},5200);
+}
+(function(){
+  $('exBtns').innerHTML=EX.map(function(e,i){return '<button class="btn" title="'+e[1]+'" onclick="document.getElementById(\'qbox\').value=EX['+i+'][1]">'+e[0]+'</button>'}).join('');
+  $('dtab').innerHTML='<p class="muted small" style="margin-top:14px">아직 불러온 데이터가 없습니다.</p>';
+})();
+</script>
+</body></html>
