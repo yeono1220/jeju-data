@@ -1,0 +1,61 @@
+[server]
+address = "127.0.0.1"
+port = 8501
+headless = true
+maxUploadSize = 50
+
+[browser]
+gatherUsageStats = false
+serverAddress = "127.0.0.1"
+
+[client]
+toolbarMode = "minimal"
+
+# 차분한 공공 업무 문서 — 흰 바탕, 강조색 하나, 1px 선, 그림자 없음.
+# 글꼴은 시스템 글꼴만 쓴다(웹폰트·CDN 없음). 윈도는 맑은 고딕, 맥은 애플 SD 고딕.
+[theme]
+base = "light"
+
+# 색
+primaryColor = "#1c5cab"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f6f5f2"
+textColor = "#1b1b1a"
+borderColor = "#e3e1da"
+linkColor = "#1c5cab"
+linkUnderline = false
+
+# '가상데이터' 표시에만 쓰는 주황
+orangeColor = "#8a4b00"
+orangeTextColor = "#8a4b00"
+orangeBackgroundColor = "#fff4df"
+# 그 밖의 색 상자는 눈에 덜 띄게(면 색과 가깝게) — 색으로 외치지 않는다
+greenTextColor = "#1b5e3f"
+greenBackgroundColor = "#eef5f0"
+blueTextColor = "#1c5cab"
+blueBackgroundColor = "#eef2f8"
+grayTextColor = "#5f5e5a"
+grayBackgroundColor = "#f6f5f2"
+
+# 글자
+font = "'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Nanum Gothic', sans-serif"
+headingFont = "'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Nanum Gothic', sans-serif"
+codeFont = "Consolas, 'D2Coding', 'Courier New', monospace"
+baseFontSize = 17
+codeFontSize = "0.9rem"
+# 제목은 3단계만: 28px(화면 제목) / 20px(칸 제목) / 16px(그 아래)
+headingFontSizes = ["1.65rem", "1.65rem", "1.65rem", "1.18rem", "1rem", "1rem"]
+headingFontWeights = [700, 700, 700, 700, 600, 600]
+metricValueFontSize = "1.65rem"
+metricValueFontWeight = 700
+
+# 모양 — 모서리 6px, 1px 선, 그림자 없음
+baseRadius = "6px"
+buttonRadius = "6px"
+showWidgetBorder = true
+showSidebarBorder = true
+
+# 표 — 옅은 선, 조용한 머리글
+dataframeHeaderBackgroundColor = "#f6f5f2"
+dataframeHeaderTextColor = "#5f5e5a"
+dataframeBorderColor = "#e3e1da"

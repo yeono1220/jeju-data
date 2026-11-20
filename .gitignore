@@ -1,0 +1,18 @@
+# 절대 올리지 않는 것 — API 키, 센터 원본 자료, 결과물
+data/
+*.env
+.env
+**/settings.json
+*.csv
+*.xlsx
+*.xls
+*.hwp
+*.parquet
+*.duckdb
+*.db
+
+# 파이썬
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/

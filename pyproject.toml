@@ -1,0 +1,33 @@
+[project]
+name = "dataolle"
+version = "0.1.0"
+description = "데이터올레 - 제주빅데이터센터 방문자를 위한 AI 분석 에이전트 (제주 AI·빅데이터 활용 AI Agent 개발 챌린지 출품작)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=2.0",
+    "pandas>=3.0",
+    "numpy>=2.4",
+    "matplotlib>=3.10",
+    "pydantic>=2.10",
+    "python-docx>=1.1",
+    "pypdf>=6.0",
+    "streamlit>=1.65",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"dataolle.spec" = ["data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
