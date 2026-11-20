@@ -268,11 +268,10 @@ with t1:
         st.text_area("질문", value=D["question"], height=80, label_visibility="collapsed", disabled=True)
         st.markdown(
             "<div class='do-why'><b>왜 질문이 두 개뿐인가요?</b><br>"
-            "자료를 메모리에 올리는 데만 1.6GB가 드는데 무료 호스팅은 1GB만 주기 때문에, "
-            "미리 돌려 둔 결과를 읽어 보여 줍니다. "
-            "숫자는 2026년 11월 20일에 가상데이터 693MB로 실제 돌려 나온 값 그대로이고, "
-            "AI는 그 숫자를 읽고 답 문장만 새로 씁니다. "
-            "설치하면 질문을 자유롭게 쓰고 그 자리에서 계산합니다.</div>",
+            "자료를 올리는 데 1.6GB가 드는데 무료 서버는 1GB까지만 줍니다. "
+            "사무용 PC는 보통 8~16GB라 <b>설치하면 그대로 돌아갑니다</b>. "
+            "여기서는 미리 돌려 둔 결과를 보여 주고, AI가 답 문장만 새로 씁니다. "
+            "숫자는 그때 실제로 나온 값 그대로입니다.</div>",
             unsafe_allow_html=True)
         if st.button("에이전트에게 맡기기", type="primary"):
             box = st.status("에이전트가 일하는 중입니다 — 보통 20~40초 걸립니다.", expanded=True)
