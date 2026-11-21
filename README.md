@@ -1,5 +1,8 @@
 # 데이터올레 (DataOlle)
 
+> **웹 시연판** https://jeju-data-impgzzzsb3cey9napjmbql.streamlit.app/ — 무료 호스팅이라 한동안 접속이 없으면 서버가 잠듭니다. 잠들어 있으면 깨우기 버튼이 뜨고, 누르면 30초 안에 열립니다.
+> 소개 페이지: https://yeono1220.github.io/jeju-data/
+
 **탐나는전 캐시백 설계 에이전트 — "예산 400억이면 몇 %로 해야 연말까지 안 끊기고 전통시장 몫이 늘까?"에 숫자로 답하고, 바로 쓸 문서까지 만듭니다**
 「제주 AI·빅데이터 활용 AI Agent 개발 챌린지」 출품작
 
